@@ -1,8 +1,8 @@
 # Simple-K-DTree
-## For advance data structure course in University of Information and technology.
+## For advance data structure course in University of Information and Technology.
 
 This implementation only supports Euclidean distance. 
-The points can be any array-like type, e.g: lists, tuples, numpy arrays.
+The input points can be any array-like type, e.g: lists, tuples, numpy arrays.
 Usage:
 1. Make the KD-Tree:
     ```python
