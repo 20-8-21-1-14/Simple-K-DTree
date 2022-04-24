@@ -1,12 +1,36 @@
-class KDTree():
-    def __init__(self, P, d=0):
-        n = len(P)
-        m = n // 2  # median value
-        P.sort(key = lambda x: x[d])
-        self.point = P[m]
-        d = (d+1)%len(P[0])
-        if m > 0:
-            self.left = KDTree(P[:m], d)
-        elif n-(m+1)>=0:
-            self.right = KDTree(P[m+1:], d)
-         
+from collections import namedtuple
+from operator import itemgetter
+from pprint import pformat
+
+class Node(namedtuple("Node", "location left_child right_child")):
+    def __repr__(self):
+        return pformat(tuple(self))
+
+def kdtree(point_list, depth: int = 0):
+    if not point_list:
+        return None
+
+    k = len(point_list[0])  # assumes all points have the same dimension
+    # Select axis based on depth so that axis cycles through all valid values
+    axis = depth % k
+
+    # Sort point list by axis and choose median as pivot element
+    point_list.sort(key=itemgetter(axis))
+    n = len(point_list)
+    median = n // 2
+
+    # Create node and construct subtrees
+    return Node(
+        location = point_list[median],
+        left_child = kdtree(point_list[:median], depth + 1),
+        right_child = kdtree(point_list[median + 1 :], depth + 1),
+    )
+
+def main():
+    """Example usage"""
+    point_list = [(0, 0), (-1, 1), (7, 2), (5, 4), (9, 6), (4, 7), (8, 1), (2, 3)]
+    tree = kdtree(point_list)
+    print(tree)
+
+if __name__ == "__main__":
+    main()
